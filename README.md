@@ -1,2 +1,2 @@
 # machine-learning
-coursera_ex1
+coursera_exercises
