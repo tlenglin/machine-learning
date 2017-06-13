@@ -83,7 +83,7 @@ fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
 alpha = 0.1;
-num_iters = 60;
+num_iters = 6000;
 
 % Init Theta and Run Gradient Descent 
 theta = zeros(3, 1);
@@ -105,8 +105,14 @@ fprintf('\n');
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
 
-normalizedSquareFeet = (1650 - mu(1)) / sigma;
-normalizedNumberOfBedrooms = (3 - mu(1)) / sigma;
+mu
+sigma
+X
+
+
+
+normalizedSquareFeet = (1650 - mu(1)) / sigma(1);
+normalizedNumberOfBedrooms = (3 - mu(2)) / sigma(2);
 
 price = [1 normalizedSquareFeet normalizedNumberOfBedrooms] * theta; % You should change this
 
@@ -153,7 +159,7 @@ fprintf('\n');
 
 % Estimate the price of a 1650 sq-ft, 3 br house
 % ====================== YOUR CODE HERE ======================
-price = 0; % You should change this
+price = [1 1650 3] * theta; % You should change this
 
 
 % ============================================================

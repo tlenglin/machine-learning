@@ -32,9 +32,9 @@ n = 1;
 for n = 1:j,
   
   tmp = X(:,n);
-  mu = mean(tmp) * ones(i, 1);
-  sigma = std(tmp);
-  X_norm(:,n) = (tmp - mu) ./ sigma;
+  mu(n) = mean(tmp);
+  sigma(n) = std(tmp);
+  X_norm(:,n) = (tmp - mu(n) * ones(i, 1)) ./ sigma(n);
   
 end;
 
