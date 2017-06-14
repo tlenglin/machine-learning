@@ -35,6 +35,5 @@ for iter = 1:num_iters
 
 end
 
-fprintf("theta = %f\n", theta);
 
 end

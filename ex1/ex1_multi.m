@@ -105,11 +105,6 @@ fprintf('\n');
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
 
-mu
-sigma
-X
-
-
 
 normalizedSquareFeet = (1650 - mu(1)) / sigma(1);
 normalizedNumberOfBedrooms = (3 - mu(2)) / sigma(2);
