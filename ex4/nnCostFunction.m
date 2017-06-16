@@ -88,6 +88,8 @@ a_3 = sigmoid(z_3); %m x K
 
 J = - 1 / m * sum(sum(Y .* log(a_3) + (1 - Y) .* log(1 - a_3), 2));
 
+%adding the regularization, starting from 2 (no regu for the bias term)
+
 J += lambda / (2 * m) * (sum(sum(Theta1(:, 2:size(Theta1, 2)) .^ 2, 2)) + sum(sum(Theta2(:, 2:size(Theta2, 2)) .^ 2, 2)));
 
 %grad = 1 / m * (X' * (sigmoid(X * tmp) - y)) + lambda / m * tmp;
@@ -97,6 +99,8 @@ J += lambda / (2 * m) * (sum(sum(Theta1(:, 2:size(Theta1, 2)) .^ 2, 2)) + sum(su
 Delta_1 = zeros(size(Theta1));
 Delta_2 = zeros(size(Theta2));
 
+
+%we work with trining examples one by one
 for t = 1:m
 
 delta_3 = zeros(10, 1);
@@ -111,6 +115,7 @@ Delta_1 = Delta_1 + delta_2 * a_1(t, :);
 
 end;
 
+%regularization of the theta gradient
 Theta1_grad(:, 1) = 1 / m * Delta_1(:, 1);
 Theta2_grad(:, 1) = 1 / m * Delta_2(:, 1);
 
