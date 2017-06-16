@@ -62,44 +62,60 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+
+
+%y is a m x 1 matrix, we change it in a m x K matrix, each row = transposed vector [ 0 0 0 ... 1 0 0 ...]
+
+I = eye(num_labels);
+Y = zeros(m, num_labels);
+for i=1:m
+  Y(i, :)= I(y(i), :); 
+end
+
+%we calculate h_theta = a_3
+
 a_1 = [ones(m, 1) X];
 
-z_2 = a_1 * Theta1';
+z_2 = a_1 * Theta1'; % m x L = m x (o + 1) * (L * (o + 1))'
 
 a_2 = [ones(size(z_2, 1), 1) sigmoid(z_2)];
 
-z_3 = a_2 * Theta2';
+z_3 = a_2 * Theta2';%m x K = m x (n + 1) * (K * (n + 1))'
 
-a_3 = sigmoid(z_3);
-size(a_3)
-size(y)
+a_3 = sigmoid(z_3); %m x K
 
+%Y = m x K
 
-%J = - 1 / m * (sum(log(sigmoid(Theta1 * X')) * y) + sum(log(1 - sigmoid(Theta1 * X')) * (1 - y)));
-J = - 1 / m * sum(sum((y) * log(a_3) + (1 - y) * log(1 - a_3), 2));
+J = - 1 / m * sum(sum(Y .* log(a_3) + (1 - Y) .* log(1 - a_3), 2));
 
-
-%tmp = zeros(size(theta));
-%tmp = theta;
-
-%J = 1 / m * (-y' * (log(sigmoid(X * theta))) - (1 - y') * (log(1 - sigmoid(X * theta)))) + lambda / (2 * m) * (theta' * theta - theta(1) ^ 2);
+J += lambda / (2 * m) * (sum(sum(Theta1(:, 2:size(Theta1, 2)) .^ 2, 2)) + sum(sum(Theta2(:, 2:size(Theta2, 2)) .^ 2, 2)));
 
 %grad = 1 / m * (X' * (sigmoid(X * tmp) - y)) + lambda / m * tmp;
 %grad(1) = 1 / m * (X(:,1)' * (sigmoid(X * tmp) - y));
 
 
+Delta_1 = zeros(size(Theta1));
+Delta_2 = zeros(size(Theta2));
 
+for t = 1:m
 
+delta_3 = zeros(10, 1);
+delta_3 = a_3(t, :)' - Y(t, :)';
 
+tmp = [ones(m, 1) z_2];
+delta_2 = Theta2' * delta_3 .* sigmoidGradient(tmp(t, :))';
+delta_2 = delta_2(2:end);
 
+Delta_2 = Delta_2 + delta_3 * a_2(t, :);
+Delta_1 = Delta_1 + delta_2 * a_1(t, :);
 
+end;
 
+Theta1_grad(:, 1) = 1 / m * Delta_1(:, 1);
+Theta2_grad(:, 1) = 1 / m * Delta_2(:, 1);
 
-
-
-
-
-
+Theta1_grad(:, 2:end) = 1 / m * Delta_1(:, 2:end) + lambda / m * Theta1(:, 2:end);
+Theta2_grad(:, 2:end) = 1 / m * Delta_2(:, 2:end) + lambda / m * Theta2(:, 2:end);
 
 % -------------------------------------------------------------
 
